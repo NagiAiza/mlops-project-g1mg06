@@ -3,6 +3,9 @@ from pydantic import BaseModel
 import pandas as pd
 from src.api.model_loader import load_model
 
+from fastapi import BackgroundTasks
+from src.model.train_model import train # Import your training function
+
 app = FastAPI(title="Sleep Disorder Prediction API", version="1.0")
 
 model = load_model()
@@ -58,6 +61,15 @@ def get_metrics():
         return metrics_data
     except Exception as e:
         raise HTTPException(status_code=404, detail=f"Metrics not found: {str(e)}")
+
+@app.post("/train")
+def trigger_training(background_tasks: BackgroundTasks):
+    background_tasks.add_task(train)
+    
+    return {
+        "message": "Training started in the background. Check /metrics in a few minutes for updated results.",
+        "status": "processing"
+    }
 
 @app.post("/predict")
 def predict(input_data: SleepInput):
