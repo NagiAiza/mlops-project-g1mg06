@@ -5,7 +5,7 @@ import json
 # CONFIGURATION
 API_URL = "https://6ixeyncmu8.eu-west-3.awsapprunner.com/"
 
-st.title("😴 Sleep Disorder Prediction System")
+st.title("Sleep Disorder Prediction System")
 st.write("Enter patient details below to predict Sleep Apnea or Insomnia.")
 
 # 1. Input Form
