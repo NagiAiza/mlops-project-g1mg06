@@ -6,6 +6,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 import joblib
 import os
+import json
 
 # CONFIGURATION
 BUCKET_NAME = "s3-g1mg06"
