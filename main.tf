@@ -51,7 +51,6 @@ output "ecr_repository_url" {
 }
 
 
-# 1. IAM Role: Allows App Runner to pull images from ECR
 resource "aws_iam_role" "apprunner_role" {
   name = "apprunner-role-g1mg06"
 
@@ -75,10 +74,10 @@ resource "aws_iam_role_policy_attachment" "apprunner_policy" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSAppRunnerServicePolicyForECRAccess"
 }
 
-# 2. App Runner Service: The actual running API
 resource "aws_apprunner_service" "api_service" {
   service_name = "apprunner-g1mg06" 
 
+  # Block 1: Where is the code coming from?
   source_configuration {
     authentication_configuration {
       access_role_arn = aws_iam_role.apprunner_role.arn
@@ -90,18 +89,19 @@ resource "aws_apprunner_service" "api_service" {
       
       image_configuration {
         port = "8000" 
-        
-        # Pass environment variables to the running container
         runtime_environment_variables = {
           AWS_REGION = "eu-west-3"
         }
-
-        instance_role_arn = aws_iam_role.app_instance_role.arn
+        # REMOVED: instance_role_arn does not go here
       }
     }
     
-    # Enable Auto-Deploy: Updates automatically when you push a new image!
     auto_deployments_enabled = true
+  }
+
+  # Block 2: How should the machine run? (Permissions go here)
+  instance_configuration {
+    instance_role_arn = aws_iam_role.app_instance_role.arn
   }
 
   depends_on = [aws_iam_role_policy_attachment.apprunner_policy]
@@ -129,7 +129,6 @@ resource "aws_iam_role" "app_instance_role" {
   })
 }
 
-# Give it Read-Only access to S3
 resource "aws_iam_role_policy_attachment" "app_s3_access" {
   role       = aws_iam_role.app_instance_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
