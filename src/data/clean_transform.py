@@ -11,7 +11,7 @@ S3_KEY_CLEAN = "processed/sleep_data_clean.csv"
 def clean_data():
     s3 = boto3.client("s3")
     
-    print(f"Downloading {S3_KEY_RAW} from {BUCKET_NAME}...")
+    print(f"Downloading {S3_KEY_RAW} from {BUCKET_NAME}")
     try:
         obj = s3.get_object(Bucket=BUCKET_NAME, Key=S3_KEY_RAW)
         df = pd.read_csv(io.BytesIO(obj["Body"].read()))
@@ -48,13 +48,13 @@ def clean_data():
 
     # 6. SAVE PROCESSED DATA
     print(f"Data shape after cleaning: {df.shape}")
-    print("Uploading processed data to S3...")
+    print("Uploading processed data to S3")
     
     csv_buffer = io.StringIO()
     df.to_csv(csv_buffer, index=False)
     
     s3.put_object(Bucket=BUCKET_NAME, Key=S3_KEY_CLEAN, Body=csv_buffer.getvalue())
-    print("ETL Pipeline finished successfully.")
+    print("ETL Pipeline finished successfully")
 
 if __name__ == "__main__":
     clean_data()

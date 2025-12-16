@@ -13,7 +13,7 @@ def upload_to_s3():
         print(f"Error: File '{LOCAL_FILE_PATH}' not found")
         sys.exit(1)
 
-    print(f"Uploading {LOCAL_FILE_PATH} to s3://{BUCKET_NAME}/{S3_KEY_RAW}...")
+    print(f"Uploading {LOCAL_FILE_PATH} to s3://{BUCKET_NAME}/{S3_KEY_RAW}")
     s3.upload_file(LOCAL_FILE_PATH, BUCKET_NAME, S3_KEY_RAW)
     print("Upload successful!")
 
