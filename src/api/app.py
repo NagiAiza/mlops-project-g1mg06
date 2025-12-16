@@ -4,7 +4,7 @@ import pandas as pd
 from src.api.model_loader import load_model
 
 from fastapi import BackgroundTasks
-from src.model.train_model import train # Import your training function
+from src.models.train_model import train # Import your training function
 
 app = FastAPI(title="Sleep Disorder Prediction API", version="1.0")
 
