@@ -1,0 +1,28 @@
+name: Setup Terraform Backend S3
+on:
+  workflow_dispatch:
+
+jobs:
+  create-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Create S3 Bucket for Terraform State
+        run: |
+          # Create the bucket
+          aws s3api create-bucket \
+            --bucket infrastats-g1mg06 \
+            --region eu-west-3 \
+            --create-bucket-configuration LocationConstraint=eu-west-3 \
+            2>/dev/null || echo "Bucket already exists"
+
+          # Enable versioning (safety for state files)
+          aws s3api put-bucket-versioning \
+            --bucket infrastats-g1mg06 \
+            --versioning-configuration Status=Enabled
