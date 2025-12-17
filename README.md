@@ -32,13 +32,16 @@ mlops-project-g1mg06/
 │   │   └── clean_transform.py
 │   └── models/           # Machine Learning Logic
 │       └── train_model.py
-├── models/               # Local artifacts (ignored by git)
 ├── frontend.py           # Streamlit User Interface
 ├── main.tf               # Terraform Infrastructure definition
 ├── Dockerfile            # Container definition
 ├── requirements.txt      # Python dependencies
 └── README.md             # Project documentation
 ```
+
+## Deployed Version
+
+Link : https://6ixeyncmu8.eu-west-3.awsapprunner.com/docs
 
 ## 🚀 Getting Started Locally
 
@@ -82,7 +85,7 @@ uvicorn src.api.app:app --reload
 **Swagger UI:** Access `http://127.0.0.1:8000/docs` to test endpoints.
 
 ### 4. Run the Interface
-Launch the Streamlit dashboard:
+Launch the Streamlit dashboard: (Only usable in local but links to the aws api for results)
 ```bash
 streamlit run frontend.py
 ```
